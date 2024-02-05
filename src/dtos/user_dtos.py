@@ -1,11 +1,14 @@
 from pydantic import BaseModel
 
-class CreateUserDTO(BaseModel):
+class UserDTO(BaseModel):
     user_name: str
     email: str
+
+class CreateUserDTO(UserDTO):
     password: str
-    is_active: bool = True
 
     class Config:
         orm_mode = True
+
+
 
