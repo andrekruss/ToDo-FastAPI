@@ -8,7 +8,7 @@ from src.infra.database.config.db_config import create_db, get_db
 from src.infra.database.repositories.user_repo import UserRepository
 
 # Entities
-from src.infra.database.entities.user import User
+from src.infra.database.entities.models import *
 
 # DTOs
 from src.dtos.user_dtos import CreateUserDTO, UserDTO

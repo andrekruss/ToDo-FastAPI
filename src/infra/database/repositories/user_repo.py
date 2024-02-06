@@ -1,6 +1,10 @@
-from sqlalchemy.orm import Session
 from src.dtos.user_dtos import CreateUserDTO
-from src.infra.database.entities.user import User
+from sqlalchemy.orm import Session
+from src.infra.database.entities.models import User
+from passlib.hash import pbkdf2_sha256
+
+def hash_password(plain_password: str) -> str:
+    return pbkdf2_sha256.hash(plain_password)
 
 class UserRepository():
 
@@ -11,8 +15,7 @@ class UserRepository():
         user = User(
             user_name = user_dto.user_name,
             email = user_dto.email,
-            password = user_dto.password,
-            is_active = user_dto.is_active
+            password = hash_password(user_dto.password)
         )
         self.db.add(user)
         self.db.commit()
