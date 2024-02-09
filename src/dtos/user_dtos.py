@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 class UserDTO(BaseModel):
+    id: int | None
     user_name: str
     email: str
 

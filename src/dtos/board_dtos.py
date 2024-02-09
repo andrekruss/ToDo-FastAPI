@@ -1,10 +1,12 @@
 from pydantic import BaseModel
 
-class BoardDTO(BaseModel):
-    id: int
+class CreateBoardDTO(BaseModel):
     title: str
     description: str
-    is_active: bool
 
     class Config:
         orm_mode = True
+
+class BoardDTO(CreateBoardDTO):
+    id: int
+    is_active: bool
