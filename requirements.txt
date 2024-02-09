@@ -4,3 +4,4 @@ sqlalchemy
 alembic
 passlib
 pyjwt
+python-multipart

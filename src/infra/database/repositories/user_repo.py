@@ -18,8 +18,8 @@ class UserRepository():
         self.db.refresh(user)
         return user
     
-    def get(self, user_login: UserLoginDTO):
-        user = self.db.query(User).filter_by(email=user_login.email).first()
+    def get_by_email(self, email: str):
+        user = self.db.query(User).filter_by(email=email).first()
         return user
         
         
