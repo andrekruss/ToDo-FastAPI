@@ -1,19 +1,22 @@
 from pydantic import BaseModel
 
-class UserDTO(BaseModel):
-    id: int | None
+class CreateUserDTO(BaseModel):
     user_name: str
     email: str
+    password:str
 
 class UserLoginDTO(BaseModel):
     email: str
     password: str
 
-class CreateUserDTO(UserDTO):
-    password: str
+class ResponseUserDTO(BaseModel):
+    user_name: str
+    email: str
+    is_active: bool
 
-    class Config:
-        orm_mode = True
-
-
-
+class UserDTO(BaseModel):
+    id: int 
+    user_name: str 
+    email: str
+    password: str | None = None
+    is_active: bool 

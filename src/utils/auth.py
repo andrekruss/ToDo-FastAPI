@@ -14,7 +14,8 @@ def get_current_user(token: str = Depends(oauth2_scheme), db_session: Session = 
     return UserDTO(
         id=user.id,
         user_name=user.user_name,
-        email=email
+        email=email,
+        is_active=user.is_active
     )
     
     
