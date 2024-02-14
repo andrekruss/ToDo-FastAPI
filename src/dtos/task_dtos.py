@@ -1,9 +1,14 @@
 from pydantic import BaseModel
 
-class TaskDTO(BaseModel):
-    id: int
+class CreateTaskDTO(BaseModel):
+    board_id: int
     title: str
-    description: str
-    
-    class Config:
-        orm_mode = True
+    description: str | None = None
+
+class TaskDTO(BaseModel):
+    id: int | None = None
+    user_id: int
+    board_id: int 
+    title: str
+    description: str | None = None
+    is_active: bool

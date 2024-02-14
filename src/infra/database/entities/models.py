@@ -12,6 +12,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     boards = relationship('Board', back_populates='user')
+    tasks = relationship('Task', back_populates='user')
     
 class Board(Base):
     __tablename__ = 'boards'
@@ -23,4 +24,18 @@ class Board(Base):
     is_active = Column(Boolean, default=True)
 
     user = relationship('User', back_populates='boards')
+    tasks = relationship('Task', back_populates='board')
+
+class Task(Base):
+    __tablename__ = 'tasks'
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    board_id = Column(Integer, ForeignKey('boards.id'), nullable=False)
+    title = Column(String(100), nullable=False)
+    description = Column(String(255))
+    is_active = Column(Boolean, default=True)
+
+    user = relationship('User', back_populates='tasks')
+    board = relationship('Board', back_populates='tasks')
     
