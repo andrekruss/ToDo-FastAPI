@@ -30,8 +30,8 @@ class BoardRepository():
             is_active = board.is_active
         )
     
-    def get(self, id: int) -> BoardDTO:
-        board = self.db_session.query(Board).filter_by(id=id).first()
+    def get(self, user_id: int, board_id: int) -> BoardDTO:
+        board = self.db_session.query(Board).filter_by(user_id=user_id , id=board_id).first()
         return BoardDTO(
             id=board.id,
             title=board.title,

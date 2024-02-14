@@ -1,9 +1,16 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+
+# Database
 from src.infra.database.config.db_config import get_db
 from src.infra.database.repositories.user_repo import UserRepository
+
+# DTOs
 from src.dtos.user_dtos import CreateUserDTO, UserDTO, UserLoginDTO, ResponseUserDTO
+from src.dtos.token_dtos import TokenDTO
+
+# Utils
 from src.utils.hash import hash_password, verify_password
 from src.utils.token import generate_jwt_token
 from src.utils.auth import get_current_user
@@ -20,7 +27,7 @@ async def create_user(create_user_dto: CreateUserDTO, db: Session = Depends(get_
         is_active=user.is_active
     )
 
-@router.post('/token')
+@router.post('/token', status_code=status.HTTP_200_OK, response_model=TokenDTO)
 async def get_access_token(login_form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user_login_dto = UserLoginDTO(
         email=login_form_data.username,
@@ -30,10 +37,7 @@ async def get_access_token(login_form_data: OAuth2PasswordRequestForm = Depends(
     if (not user or not verify_password(user_login_dto.password, user.password)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect user or password.")
     jwt_token = generate_jwt_token({"sub": user.email})
-    return {
-        'access_token': jwt_token,
-        'token_type': 'bearer'
-    }
+    return TokenDTO(access_token=jwt_token)
 
 @router.get('/me', status_code=status.HTTP_200_OK, response_model=ResponseUserDTO)
 async def protected_route(user: UserDTO = Depends(get_current_user)):
