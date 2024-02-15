@@ -31,3 +31,38 @@ class TaskRepository():
             description = task.description,
             is_active = task.is_active
         )
+    
+    def get(self, user_id: int, board_id: int, task_id: int) -> TaskDTO:
+        task = self.db_session.query(Task).filter_by(
+            user_id = user_id,
+            board_id = board_id,
+            id = task_id
+        ).first()
+
+        return TaskDTO(
+            id = task.id,
+            user_id = task.user_id,
+            board_id = task.board_id,
+            title = task.title,
+            description = task.description,
+            is_active = task.is_active
+        )
+    
+    def list(self, user_id: int, board_id: int):
+        tasks = self.db_session.query(Task).filter_by(
+            user_id = user_id,
+            board_id = board_id
+        ).all()
+        tasks_dtos = [ ]
+        for task in tasks:
+            task_dto = TaskDTO(
+                id = task.id,
+                user_id = task.user_id,
+                board_id = task.board_id,
+                title = task.title,
+                description = task.description,
+                is_active = task.is_active
+            )
+            tasks_dtos.append(task_dto)
+
+        return tasks_dtos
