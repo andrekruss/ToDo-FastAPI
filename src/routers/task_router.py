@@ -39,3 +39,13 @@ async def list_tasks(board_id: int, current_user: UserDTO = Depends(get_current_
         board_id = board_id
     )
     return tasks
+
+@router.delete('/tasks/{board_id}/{task_id}', status_code=status.HTTP_200_OK, response_model=TaskDTO)
+async def delete_task_by_id(board_id: int, task_id: int, current_user: UserDTO = Depends(get_current_user), db_session: Session = Depends(get_db)):
+    user_id = current_user.id
+    task = TaskRepository(db_session).delete(
+        user_id=user_id,
+        board_id=board_id,
+        task_id=task_id
+    )
+    return task

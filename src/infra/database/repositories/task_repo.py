@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy.orm import Session
 
 # Entities
@@ -32,23 +33,47 @@ class TaskRepository():
             is_active = task.is_active
         )
     
-    def get(self, user_id: int, board_id: int, task_id: int) -> TaskDTO:
+    def get(self, user_id: int, board_id: int, task_id: int) -> TaskDTO | None:
         task = self.db_session.query(Task).filter_by(
             user_id = user_id,
             board_id = board_id,
             id = task_id
         ).first()
 
-        return TaskDTO(
-            id = task.id,
-            user_id = task.user_id,
-            board_id = task.board_id,
-            title = task.title,
-            description = task.description,
-            is_active = task.is_active
-        )
+        if task:
+            return TaskDTO(
+                id = task.id,
+                user_id = task.user_id,
+                board_id = task.board_id,
+                title = task.title,
+                description = task.description,
+                is_active = task.is_active
+            )
+        return None
     
-    def list(self, user_id: int, board_id: int):
+    def delete(self, user_id: int, board_id: int, task_id: int) -> TaskDTO | None:
+        task = self.db_session.query(Task).filter_by(
+            user_id = user_id,
+            board_id = board_id,
+            id = task_id
+        ).first()
+
+        if task:
+            task_dto = TaskDTO(
+                id = task.id,
+                user_id = task.user_id,
+                board_id = task.board_id,
+                title = task.title,
+                description = task.description,
+                is_active = task.is_active
+            )
+            self.db_session.delete(task)
+            self.db_session.commit()
+            return task_dto
+
+        return None
+    
+    def list(self, user_id: int, board_id: int) -> List[TaskDTO]:
         tasks = self.db_session.query(Task).filter_by(
             user_id = user_id,
             board_id = board_id
