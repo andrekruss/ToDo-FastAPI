@@ -38,4 +38,10 @@ class Task(Base):
 
     user = relationship('User', back_populates='tasks')
     board = relationship('Board', back_populates='tasks')
+
+class Comment(Base):
+    __tablename__ = 'comments'
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(100), nullable=False)
     

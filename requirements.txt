@@ -5,3 +5,4 @@ alembic
 passlib
 pyjwt
 python-multipart
+psycopg2
